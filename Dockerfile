@@ -1,8 +1,6 @@
 # ========================================================
 # Dockerfile برای Railway - استفاده از باینری آماده
 # ========================================================
-# این Dockerfile فقط برای دیپلوی روی Railway استفاده می‌شه
-# پروژه اصلی Heimdall تغییری نکرده
 
 FROM debian:bookworm-slim
 
@@ -26,12 +24,16 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 WORKDIR /usr/local/x-ui
 
-# پورت پنل مدیریت
-EXPOSE 2053
+# کپی اسکریپت شروع
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-# متغیرهای محیطی برای Railway
+# متغیرهای محیطی
 ENV XUI_IN_DOCKER="true"
 ENV XUI_MAIN_FOLDER="/usr/local/x-ui"
 ENV XUI_DB_FOLDER="/etc/x-ui"
+ENV XUI_PORT=2053
 
-CMD ["./x-ui"]
+EXPOSE 2053
+
+CMD ["/start.sh"]
