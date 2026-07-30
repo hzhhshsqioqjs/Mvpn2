@@ -1,5 +1,5 @@
 # ========================================================
-# Dockerfile برای Railway - استفاده از باینری آماده
+# Dockerfile برای Railway - Heimdall v1.5.0
 # ========================================================
 
 FROM debian:bookworm-slim
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ln -sf /usr/share/zoneinfo/Asia/Tehran /etc/localtime \
     && rm -rf /var/lib/apt/lists/*
 
-# دانلود و نصب Heimdall v1.5.0 (باینری آماده)
+# دانلود و نصب Heimdall v1.5.0
 RUN curl -L https://github.com/sh7CBAC/Heimdall/releases/download/v1.5.0/x-ui-linux-amd64.tar.gz -o /tmp/x-ui.tar.gz \
     && tar -xzf /tmp/x-ui.tar.gz -C /usr/local/ \
     && rm /tmp/x-ui.tar.gz \
@@ -24,15 +24,11 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 WORKDIR /usr/local/x-ui
 
-# کپی اسکریپت شروع
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-# متغیرهای محیطی
-ENV XUI_IN_DOCKER="true"
-ENV XUI_MAIN_FOLDER="/usr/local/x-ui"
-ENV XUI_DB_FOLDER="/etc/x-ui"
-ENV XUI_PORT=2053
+# Railway خودش پورت رو تنظیم میکنه
+# x-ui از متغیر PORT یا XUI_PORT استفاده میکنه
 
 EXPOSE 2053
 

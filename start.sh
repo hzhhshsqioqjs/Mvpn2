@@ -1,12 +1,13 @@
 #!/bin/sh
 set -eu
 
-# استفاده از PORT Railway یا XUI_PORT یا پیش‌فرض 2053
-PORT="${XUI_PORT:-${PORT:-2053}}"
+# Railway پورت رو از طریق متغیر PORT میده
+# اگه PORT نبود از XUI_PORT استفاده کن
+PORT="${PORT:-${XUI_PORT:-2053}}"
 
-echo "🚀 Starting Heimdall on port $PORT..."
+echo "🚀 Starting Heimdall v1.5.0 on port $PORT..."
 
-# تنظیم پورت
+# تنظیم پورت پنل
 export XUI_PORT=$PORT
 
 # اجرای Heimdall
