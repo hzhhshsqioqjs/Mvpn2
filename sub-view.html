@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MVPN - اشتراک شما</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Vazirmatn:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{
+  --bg:#14171c;--bg-2:#0f1216;
+  --coral:#e15a4c;--coral-2:#f0705f;--coral-deep:#c14a3e;--coral-glow:rgba(225,90,76,.35);
+  --gold:#e0a44f;--cool:#5b9bd5;--fg:#f3efea;--muted:#aab0b9;--muted-2:#7b818b;
+  --glass:rgba(255,255,255,.055);--glass-brd:rgba(255,255,255,.12);
+  --hi:inset 0 1px 0 rgba(255,255,255,.28), inset 0 -1px 1px rgba(0,0,0,.25);
+  --drop:0 30px 60px -24px rgba(0,0,0,.6);
+  --radius:26px;--radius-sm:16px;
+  --fa:'Vazirmatn',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,monospace;
+  --blur:saturate(170%) blur(26px);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fa);background:var(--bg);color:var(--fg);line-height:1.75;overflow-x:hidden;min-height:100vh;transition:all .5s ease}
+body.dark{--bg:#14171c;--bg-2:#0f1216;--fg:#f3efea;--muted:#aab0b9;--glass:rgba(255,255,255,.055);--glass-brd:rgba(255,255,255,.12)}
+body.light{--bg:#f5f0eb;--bg-2:#ede7e0;--fg:#1a1a2e;--muted:#6b7280;--glass:rgba(255,255,255,.65);--glass-brd:rgba(255,255,255,.9)}
+body.light{background:var(--bg);color:var(--fg)}
+.bg-fx{position:fixed;inset:0;z-index:-3;transition:all .5s ease}
+body.dark .bg-fx{background:radial-gradient(120% 100% at 50% 0%,#1b2028,var(--bg-2))}
+body.light .bg-fx{background:radial-gradient(120% 100% at 50% 0%,#f8f4ef,var(--bg-2))}
+.orb{position:fixed;border-radius:50%;filter:blur(80px);z-index:-2;animation:drift 22s ease-in-out infinite;transition:all .5s ease}
+body.dark .orb.o1{width:460px;height:460px;background:var(--coral);top:-140px;right:-100px;opacity:.55}
+body.dark .orb.o2{width:400px;height:400px;background:var(--cool);top:34%;left:-140px;animation-delay:-7s;opacity:.4}
+body.dark .orb.o3{width:420px;height:420px;background:var(--gold);bottom:-160px;right:22%;animation-delay:-13s;opacity:.35}
+body.dark .orb.o4{width:340px;height:340px;background:#9b6ad0;top:60%;right:-120px;animation-delay:-4s;opacity:.3}
+body.light .orb.o1{width:500px;height:500px;background:#e15a4c;top:-160px;right:-120px;opacity:.12}
+body.light .orb.o2{width:450px;height:450px;background:#5b9bd5;top:30%;left:-160px;animation-delay:-7s;opacity:.1}
+body.light .orb.o3{width:480px;height:480px;background:#e0a44f;bottom:-180px;right:20%;animation-delay:-13s;opacity:.08}
+body.light .orb.o4{width:380px;height:380px;background:#9b6ad0;top:55%;right:-140px;animation-delay:-4s;opacity:.07}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(38px,-34px) scale(1.09)}66%{transform:translate(-30px,26px) scale(.94)}}
+.noise{position:fixed;inset:0;z-index:-1;pointer-events:none;transition:all .5s ease}
+body.dark .noise{opacity:.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+body.light .noise{opacity:.02;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.glass{border-radius:var(--radius);position:relative;overflow:hidden;transition:all .5s ease}
+body.dark .glass{background:var(--glass);border:1px solid var(--glass-brd);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:var(--hi),var(--drop)}
+body.light .glass{background:var(--glass);border:1px solid var(--glass-brd);box-shadow:0 8px 32px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.8)}
+.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+body.dark .glass::before{background:linear-gradient(160deg,rgba(255,255,255,.14),rgba(255,255,255,0) 40%)}
+body.light .glass::before{background:linear-gradient(160deg,rgba(255,255,255,.7),rgba(255,255,255,0) 40%)}
+.glass-sm{border-radius:var(--radius-sm);position:relative;overflow:hidden;transition:all .5s ease}
+body.dark .glass-sm{background:var(--glass);border:1px solid var(--glass-brd);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur)}
+body.light .glass-sm{background:rgba(255,255,255,.7);border:1px solid rgba(0,0,0,.05);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.glass-sm::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+body.dark .glass-sm::before{background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,0) 40%)}
+body.light .glass-sm::before{background:linear-gradient(160deg,rgba(255,255,255,.6),rgba(255,255,255,0) 40%)}
+.theme-btn{position:fixed;top:14px;left:14px;z-index:50;width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;font-size:16px;transition:all .3s}
+body.dark .theme-btn{background:var(--glass);color:var(--gold);border:1px solid var(--glass-brd);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:var(--hi)}
+body.dark .theme-btn:hover{transform:scale(1.1);color:var(--coral)}
+body.light .theme-btn{background:white;color:#6366f1;border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 12px rgba(0,0,0,.08)}
+body.light .theme-btn:hover{transform:scale(1.1);color:#4f46e5}
+.tbox{border-radius:12px;padding:6px 12px;display:inline-block;transition:all .5s ease}
+body.dark .tbox{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1)}
+body.light .tbox{background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.12)}
+.ic{width:40px;height:40px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .3s}
+body.dark .ic{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);color:var(--muted)}
+body.dark .ic:hover{background:var(--coral-glow);border-color:rgba(225,90,76,.3);color:var(--coral)}
+body.light .ic{background:rgba(0,0,0,.03);border:1px solid rgba(0,0,0,.06);color:#64748b}
+body.light .ic:hover{background:rgba(99,102,241,.1);color:#6366f1;border-color:rgba(99,102,241,.2)}
+.tg{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:16px;font-size:12px;font-weight:600;text-decoration:none;transition:all .3s}
+body.dark .tg{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.15);color:#818cf8}
+body.dark .tg:hover{background:rgba(99,102,241,.15);border-color:rgba(99,102,241,.3);transform:translateY(-1px)}
+body.light .tg{background:rgba(99,102,241,.08);border:1px solid rgba(99,102,241,.15);color:#4f46e5}
+body.light .tg:hover{background:rgba(99,102,241,.12);border-color:rgba(99,102,241,.25);transform:translateY(-1px)}
+.pbar{border-radius:99px;height:8px;overflow:hidden;transition:all .5s ease}
+body.dark .pbar{background:rgba(255,255,255,.08)}
+body.light .pbar{background:rgba(0,0,0,.06)}
+.pfill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--coral),var(--coral-2));transition:width .8s}
+.pbar2{height:5px;border-radius:99px;transition:all .5s ease}
+body.dark .pbar2{background:rgba(255,255,255,.04)}
+body.light .pbar2{background:rgba(0,0,0,.04)}
+.proto-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;position:relative;overflow:hidden}
+.proto-icon::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%)}
+.logo-main{width:88px;height:88px;margin:0 auto 24px;border-radius:26px;display:flex;align-items:center;justify-content:center;position:relative;transition:all .5s ease}
+body.dark .logo-main{background:linear-gradient(135deg,var(--coral),var(--coral-deep));box-shadow:0 12px 40px var(--coral-glow),0 0 80px rgba(225,90,76,.15)}
+body.light .logo-main{background:linear-gradient(135deg,#6366f1,#8b5cf6,#a855f7);box-shadow:0 12px 40px rgba(99,102,241,.3),0 0 60px rgba(139,92,246,.15)}
+.logo-main::before{content:'';position:absolute;inset:-3px;border-radius:28px;z-index:-1;filter:blur(8px);opacity:.6;transition:all .5s ease}
+body.dark .logo-main::before{background:linear-gradient(135deg,rgba(225,90,76,.6),rgba(240,112,95,.6),rgba(193,74,62,.6))}
+body.light .logo-main::before{background:linear-gradient(135deg,rgba(99,102,241,.5),rgba(139,92,246,.5),rgba(168,85,247,.5))}
+.logo-main .logo-inner{position:absolute;inset:0;border-radius:26px;background:linear-gradient(135deg,rgba(255,255,255,.2) 0%,transparent 50%)}
+.badge-active{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:99px;font-size:12px;font-weight:500}
+body.dark .badge-active{background:rgba(16,185,129,.1);color:#34d399;border:1px solid rgba(16,185,129,.2)}
+body.light .badge-active{background:rgba(16,185,242,.08);color:#059669;border:1px solid rgba(16,185,129,.15)}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);color:white;font-weight:700;padding:10px 20px;border-radius:16px;font-size:12px;z-index:100;opacity:0;transition:all .3s}
+body.dark .toast{background:linear-gradient(135deg,var(--coral),var(--coral-deep));box-shadow:0 8px 24px var(--coral-glow)}
+body.light .toast{background:linear-gradient(135deg,#6366f1,#8b5cf6);box-shadow:0 8px 24px rgba(99,102,241,.3)}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.qr-box{display:none;padding-top:16px;margin-top:16px;justify-content:center}
+body.dark .qr-box{border-top:1px dashed rgba(255,255,255,.1)}
+body.light .qr-box{border-top:1px dashed rgba(0,0,0,.08)}
+.qr-box.show{display:flex}
+.sec{margin-bottom:40px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp .5s ease-out forwards;opacity:0}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:transparent}
+body.dark ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:99px}
+body.light ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.08);border-radius:99px}
+.mono{font-family:var(--mono)}
+.divider{height:1px;transition:all .5s ease}
+body.dark .divider{background:rgba(255,255,255,.06)}
+body.light .divider{background:rgba(0,0,0,.06)}
+</style>
+</head>
+<body class="dark">
+<div class="bg-fx"></div>
+<div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div>
+<div class="noise"></div>
+
+<button class="theme-btn" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i></button>
+
+<div style="max-width:440px;margin:0 auto;padding:20px 20px 40px;padding-top:70px">
+
+  <!-- HEADER -->
+  <div class="glass fade-in" style="padding:40px 28px;text-align:center">
+    <div class="logo-main">
+      <div class="logo-inner"></div>
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4" stroke-width="2"/>
+      </svg>
+    </div>
+    <h1 style="font-size:18px;font-weight:700;margin-bottom:12px" id="userTitle"><span class="tbox">اکانت شما</span></h1>
+    <p style="font-size:12px;margin-bottom:16px" id="statusMsg"><span class="tbox" style="font-size:12px">در حال دریافت اطلاعات...</span></p>
+    <div>
+      <span class="badge-active" id="statusBadge">
+        <span class="w-2 h-2 rounded-full" style="background:#aab0b9"></span>
+        <span id="statusBadgeText">در حال بررسی</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- USAGE -->
+  <div class="glass sec fade-in" id="usageCard" style="padding:28px;margin-top:40px;display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <span class="tbox" style="font-size:13px"><i class="fas fa-chart-pie ml-1.5" style="color:var(--coral)"></i>حجم مصرف شده</span>
+      <span style="font-weight:700;font-size:14px" id="usageHeadline"><span class="tbox">-</span></span>
+    </div>
+    <div class="pbar" style="margin-bottom:28px"><div class="pfill" id="usageFill" style="width:0%"></div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="glass-sm" style="padding:16px;text-align:center">
+        <div style="font-size:11px;margin-bottom:8px"><span class="tbox"><i class="fas fa-calendar-days ml-1" style="color:var(--gold)"></i>تمدید بعدی</span></div>
+        <div style="font-size:14px;font-weight:600" id="renewDate"><span class="tbox">-</span></div>
+      </div>
+      <div class="glass-sm" style="padding:16px;text-align:center">
+        <div style="font-size:11px;margin-bottom:8px"><span class="tbox"><i class="fas fa-hourglass-half ml-1" style="color:var(--coral-2)"></i>زمان باقیمانده</span></div>
+        <div style="font-size:14px;font-weight:600" id="daysLeft"><span class="tbox">-</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROTOCOL -->
+  <div class="glass sec fade-in" id="protoCard" style="padding:28px;margin-top:40px;display:none">
+    <div style="font-size:12px;margin-bottom:16px"><span class="tbox"><i class="fas fa-shuffle ml-1.5" style="color:var(--cool)"></i>ترکیب پروتکل‌ها</span></div>
+    <div id="protoBars" style="display:flex;flex-direction:column;gap:12px"></div>
+  </div>
+
+  <!-- CONFIGS -->
+  <div id="listWrap" class="sec fade-in" style="margin-top:40px;display:none">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px;margin-bottom:20px">
+      <h2 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px"><span class="tbox">کانفیگ‌ها <span class="mono" id="countBadge">(0)</span></span></h2>
+      <button style="font-size:12px;background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:4px" onclick="copyAll()"><i class="fas fa-copy" style="color:var(--coral)"></i><span style="color:var(--coral)">کپی همه</span></button>
+    </div>
+    <div id="list" style="display:flex;flex-direction:column;gap:16px"></div>
+  </div>
+
+  <p style="font-size:12px;text-align:center;padding:48px 0;display:none" id="emptyMsg">کانفیگی پیدا نشد.</p>
+
+  <!-- FOOTER -->
+  <div class="fade-in" style="text-align:center;padding-top:48px;padding-bottom:16px;animation-delay:0.2s">
+    <div class="divider" style="margin-bottom:32px"></div>
+    <p style="font-size:12px;margin-bottom:16px">کند ذهن هستید و نتوانستید وصل شوید ؟</p>
+    <a href="https://t.me/saweg78" class="tg">
+      <i class="fab fa-telegram" style="font-size:16px"></i>بهتره به داش مهرداد پیام بدی
+    </a>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== Theme =====
+let theme=localStorage.getItem('mvpn-theme')||'dark';
+document.body.className=theme;
+document.getElementById('themeIcon').className=theme==='dark'?'fas fa-sun':'fas fa-moon';
+function toggleTheme(){theme=theme==='dark'?'light':'dark';document.body.className=theme;localStorage.setItem('mvpn-theme',theme);document.getElementById('themeIcon').className=theme==='dark'?'fas fa-sun':'fas fa-moon'}
+
+// ===== Elements =====
+const userTitle=document.getElementById('userTitle'),statusMsg=document.getElementById('statusMsg'),statusBadge=document.getElementById('statusBadge'),statusBadgeText=document.getElementById('statusBadgeText'),usageCard=document.getElementById('usageCard'),usageFill=document.getElementById('usageFill'),usageHeadline=document.getElementById('usageHeadline'),renewDate=document.getElementById('renewDate'),daysLeft=document.getElementById('daysLeft'),protoCard=document.getElementById('protoCard'),protoBars=document.getElementById('protoBars'),listWrap=document.getElementById('listWrap'),listEl=document.getElementById('list'),countBadge=document.getElementById('countBadge'),emptyMsg=document.getElementById('emptyMsg'),toastEl=document.getElementById('toast');
+
+// ===== Helpers =====
+function showToast(t){toastEl.innerHTML='<i class="fas fa-check-circle ml-1"></i> '+t;toastEl.classList.add('show');setTimeout(()=>toastEl.classList.remove('show'),1800)}
+function setBadge(s,t){statusBadge.className='badge-active';const colors={loading:['rgba(148,163,184,.1)','#aab0b9','rgba(148,163,184,.15)','aab0b9'],active:['rgba(16,185,129,.1)','#34d399','rgba(16,185,129,.2)','34d399'],error:['rgba(244,63,94,.1)','#fb7185','rgba(244,63,94,.2)','fb7185']};const cv=colors[s]||colors.loading;statusBadge.style.background=cv[0];statusBadge.style.color=cv[1];statusBadge.style.borderColor=cv[2];statusBadge.innerHTML=`<span class="w-2 h-2 rounded-full" style="background:${cv[3]}"></span><span>${t}</span>`}
+function setStatus(t){statusMsg.innerHTML='<span class="tbox" style="font-size:12px">'+t+'</span>'}
+function b64d(s){s=s.trim().replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';try{return decodeURIComponent(escape(atob(s)))}catch(e){try{return atob(s)}catch(e2){return''}}}
+function fmtB(b){if(!isFinite(b)||b<0)return'-';const u=['B','KB','MB','GB','TB'];let i=0,v=b;while(v>=1024&&i<u.length-1){v/=1024;i++}return v.toFixed(v>=10?0:1)+' '+u[i]}
+const fd=['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];function toFa(n){return String(n).replace(/[0-9]/g,d=>fd[d])}
+function toJ(gy,gm,gd){const g=[0,31,59,90,120,151,181,212,243,273,304,334];let jy;if(gy<=1600){jy=0;gy-=621}else{jy=979;gy-=1600}const g2=(gm>2)?(gy+1):gy;let days=(365*gy)+Math.floor((g2+3)/4)-Math.floor((g2+99)/100)+Math.floor((g2+399)/400)-80+gd+g[gm-1];jy+=33*Math.floor(days/12053);days%=12053;jy+=4*Math.floor(days/1461);days%=1461;if(days>365){jy+=Math.floor((days-1)/365);days=(days-1)%365}const jm=(days<186)?1+Math.floor(days/31):7+Math.floor((days-186)/30);const jd=1+((days<186)?(days%31):((days-186)%30));return[jy,jm,jd]}
+function fmtJ(u){const d=new Date(u*1000);const[jy,jm,jd]=toJ(d.getFullYear(),d.getMonth()+1,d.getDate());return toFa(jy+'/'+String(jm).padStart(2,'0')+'/'+String(jd).padStart(2,'0'))}
+
+// ===== Render Usage =====
+function renderUsage(h){
+if(!h){usageCard.style.display='none';return}
+const p={};h.split(';').forEach(s=>{const[k,v]=s.trim().split('=');if(k&&v!==undefined)p[k.trim()]=parseInt(v.trim(),10)});
+const used=(p.upload||0)+(p.download||0),total=p.total||0,expire=p.expire||0;
+usageCard.style.display='block';
+if(total>0){const pct=Math.min(100,(used/total)*100);usageFill.style.width=pct+'%';if(pct>90)usageFill.style.background='linear-gradient(90deg,#ef4444,#dc2626)';else if(pct>70)usageFill.style.background='linear-gradient(90deg,#f59e0b,#f97316)';else usageFill.style.background='';usageHeadline.innerHTML='<span class="tbox">'+fmtB(used)+'</span> <span class="tbox" style="font-size:11px">از '+fmtB(total)+'</span>'}
+else if(used>0){usageFill.style.width='100%';usageHeadline.innerHTML='<span class="tbox">'+fmtB(used)+'</span> <span class="tbox" style="font-size:11px">نامحدود</span>'}
+else{usageFill.style.width='0%';usageHeadline.innerHTML='<span class="tbox">بدون مصرف</span>'}
+if(expire>0){const now=Math.floor(Date.now()/1000);const days=Math.max(0,Math.ceil((expire-now)/86400));daysLeft.innerHTML='<span class="tbox">'+toFa(days)+' روز</span>';renewDate.innerHTML='<span class="tbox">'+fmtJ(expire)+'</span>'}
+else{daysLeft.innerHTML='<span class="tbox">نامحدود</span>';renewDate.innerHTML='<span class="tbox">نامحدود</span>'}}
+
+// ===== Protocol Detection =====
+function dP(u){if(u.startsWith('vless://'))return{key:'vless',l:'VLESS',i:'fa-bolt',c:'var(--coral)',bg:'rgba(225,90,76,.15)'};if(u.startsWith('vmess://'))return{key:'vmess',l:'VMESS',i:'fa-shuffle',c:'var(--gold)',bg:'rgba(224,164,79,.15)'};if(u.startsWith('trojan://'))return{key:'trojan',l:'TROJAN',i:'fa-mask',c:'#f472b6',bg:'rgba(244,114,182,.15)'};if(u.startsWith('ss://'))return{key:'ss',l:'SS',i:'fa-lock',c:'var(--cool)',bg:'rgba(91,155,213,.15)'};if(u.startsWith('hysteria2://')||u.startsWith('hy2://'))return{key:'hy2',l:'HY2',i:'fa-cloud',c:'#34d399',bg:'rgba(52,211,153,.15)'};if(u.startsWith('tuic://'))return{key:'tuic',l:'TUIC',i:'fa-satellite-dish',c:'#fbbf24',bg:'rgba(251,191,36,.15)'};return{key:'other',l:'UNK',i:'fa-link',c:'var(--muted)',bg:'rgba(170,176,185,.15)'}}
+function pE(u){const p=dP(u);let n=p.l,s='';try{if(p.key==='vmess'){const j=JSON.parse(b64d(u.replace('vmess://','')));n=j.ps||p.l;s=(j.add||'-')+':'+(j.port||'-')+' · '+(j.net||'tcp')}else{const hi=u.indexOf('#');if(hi>-1)n=decodeURIComponent(u.slice(hi+1))||p.l;const body=u.split('://')[1]||'';const bh=body.split('#')[0];const[uh,qs]=bh.split('?');const af=uh.includes('@')?uh.split('@')[1]:uh;const[host,port]=af.split(':');const sp=new URLSearchParams(qs||'');s=(host||'-')+':'+(port||'-')+' · '+(sp.get('type')||'tcp')}}catch(e){}return{u,p,n,s}}
+
+// ===== Render Protocol =====
+function renderProto(entries){
+const cnt={};entries.forEach(e=>{cnt[e.p.key]=(cnt[e.p.key]||0)+1});const keys=Object.keys(cnt);protoBars.innerHTML='';
+if(!keys.length){protoCard.style.display='none';return}protoCard.style.display='block';
+const mx=Math.max(...Object.values(cnt));
+keys.forEach(k=>{const s=entries.find(e=>e.p.key===k).p;const r=document.createElement('div');r.className='flex items-center gap-3 text-sm';
+r.innerHTML=`<span class="mono" style="width:72px;flex-shrink:0;font-weight:700;color:${s.c}">${s.l}</span><div class="pbar2" style="flex:1"><div class="h-full rounded-full" style="width:${cnt[k]/mx*100}%;background:${s.c}"></div></div><span class="mono" style="width:20px;text-align:left">${toFa(cnt[k])}</span>`;
+protoBars.appendChild(r)})}
+
+// ===== Render Configs =====
+function renderEntries(raw){
+listEl.innerHTML='';const lines=raw.split(/\r?\n/).map(l=>l.trim()).filter(l=>/^[a-z0-9]+:\/\//i.test(l));
+if(!lines.length){listWrap.style.display='none';emptyMsg.style.display='block';setBadge('error','کانفیگی یافت نشد');return}
+emptyMsg.style.display='none';listWrap.style.display='block';setStatus('اطلاعات اشتراک با موفقیت دریافت شد.');setBadge('active','فعال ✓');
+const entries=lines.map(pE);countBadge.textContent='('+toFa(entries.length)+')';renderProto(entries);
+if(entries.length&&entries[0].n)userTitle.innerHTML='<span class="tbox">'+entries[0].n+'</span>';
+entries.forEach((e,i)=>{const card=document.createElement('div');card.className='glass-sm fade-in';card.style.padding='20px';
+card.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:16px;min-width:0"><div class="proto-icon" style="background:${e.p.bg};color:${e.p.c}"><i class="fas ${e.p.i}"></i></div><div style="min-width:0"><div style="font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span class="tbox">${e.n}</span></div><div class="mono" style="font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)"><span class="tbox" style="font-size:11px">${e.s}</span></div></div></div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0"><button class="ic qr-t"><i class="fas fa-qrcode"></i></button><button class="ic cp-o"><i class="fas fa-copy"></i></button></div></div><div class="qr-box" id="qr-${i}"><div class="p-2 bg-white rounded-xl" id="qr-c-${i}"></div></div>`;
+listEl.appendChild(card);
+card.querySelector('.cp-o').onclick=()=>navigator.clipboard.writeText(e.u).then(()=>showToast('کپی شد ✓'));
+card.querySelector('.qr-t').onclick=()=>{const q=card.querySelector('.qr-box');const showing=q.classList.contains('show');q.classList.toggle('show',!showing);const h=card.querySelector('#qr-c-'+i);if(!showing&&h.childElementCount===0)new QRCode(h,{text:e.u,width:140,height:140,colorDark:'#0B0E13',colorLight:'#ffffff'})}})}
+function copyAll(){const raw=window.__rawSub||'';navigator.clipboard.writeText(raw).then(()=>showToast('همه کپی شد ✓'))}
+
+// ===== Fetch from Server =====
+async function loadFromServer(id){let url=id;if(!/^https?:\/\//i.test(id)){const c=id.replace(/^\/+/,'').replace(/^(sub|rawsub|view)\//,'');url='/rawsub/'+c}const res=await fetch(url);if(!res.ok)throw new Error('fail');renderUsage(res.headers.get('subscription-userinfo'));const raw=await res.text();let decoded=raw;if(!/:\/\//.test(raw))decoded=b64d(raw);window.__rawSub=decoded;renderEntries(decoded)}
+
+// ===== Init =====
+(function(){const p=new URLSearchParams(window.location.search);let sub=p.get('sub')||p.get('id');if(!sub){const m=window.location.pathname.match(/\/sub\/([^\/?#]+)/);if(m)sub=m[1]}
+if(sub){setStatus('صبر کنید...');setBadge('loading','در حال بررسی');loadFromServer(sub).catch(()=>{setStatus('دریافت ناموفق. لینک را دوباره امتحان کنید.');setBadge('error','خطا')})}
+else{ setStatus('لینک اشتراک معتبر نیست.');setBadge('error','نامعتبر')}})();
+</script>
+</body>
+</html>

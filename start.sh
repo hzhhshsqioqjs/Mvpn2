@@ -1,12 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-echo "🚀 Heimdall v1.5.0 Starting..."
-echo "📋 Railway PORT=$PORT"
+echo "🚀 Starting X-UI + nginx reverse proxy..."
 
-# تنظیم پورت از Railway - حتماً export کن!
-export XUI_PORT="${PORT:-2053}"
+# nginx همیشه روی پورت ثابت 3000 گوش می‌دهد
+export NGINX_PORT=3000
 
-echo "📋 XUI_PORT=$XUI_PORT"
+cd /usr/local/x-ui
 
-exec /usr/local/x-ui/x-ui.bin
+echo "🔧 Applying panel settings via x-ui CLI..."
+./x-ui setting -port 2053 -webBasePath /managepanel/ -username admin -password admin || true
+
+echo "🔧 Building nginx.conf for fixed port: $NGINX_PORT"
+envsubst '${NGINX_PORT}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+
+echo "▶️ Starting x-ui in background..."
+./x-ui &
+X_UI_PID=$!
+
+sleep 2
+
+echo "▶️ Starting nginx in foreground on port $NGINX_PORT..."
+nginx -t
+exec nginx -g "daemon off;"
