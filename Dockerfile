@@ -4,6 +4,10 @@
 
 FROM debian:bookworm-slim
 
+# Force cache bust - تاریخ رو عوض کن تا کش بشکنه
+ARG BUILD_DATE=2026-07-30-v4
+ENV BUILD_DATE=${BUILD_DATE}
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     bash \
@@ -24,6 +28,10 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 WORKDIR /usr/local/x-ui
 
+# کپی start.sh بعد از cache bust
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
+
 EXPOSE 2053
 
-CMD ["./x-ui"]
+CMD ["/start.sh"]
