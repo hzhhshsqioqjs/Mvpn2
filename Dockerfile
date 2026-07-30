@@ -1,5 +1,8 @@
 FROM debian:bookworm-slim
 
+# FORCE REBUILD - timestamp
+ARG REBUILD=2026073007
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     bash \
@@ -12,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && ln -sf /usr/share/zoneinfo/Asia/Tehran /etc/localtime \
     && rm -rf /var/lib/apt/lists/*
 
-# دانلود و نصب X-UI v1.5.0
+# دانلود و نصب Heimdall v1.5.0
 RUN curl -L https://github.com/sh7CBAC/Heimdall/releases/download/v1.5.0/x-ui-linux-amd64.tar.gz -o /tmp/x-ui.tar.gz \
     && tar -xzf /tmp/x-ui.tar.gz -C /usr/local/ \
     && rm /tmp/x-ui.tar.gz \
@@ -21,6 +24,9 @@ RUN curl -L https://github.com/sh7CBAC/Heimdall/releases/download/v1.5.0/x-ui-li
 RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
+
+# Cache bust for start.sh
+ARG START_DATE=2026073007
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
