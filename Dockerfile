@@ -24,6 +24,7 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 WORKDIR /usr/local/x-ui
 
+# cache-bust: 2026-07-30-v2
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
