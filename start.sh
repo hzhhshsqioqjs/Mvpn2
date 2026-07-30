@@ -1,12 +1,12 @@
 #!/bin/sh
 set -e
 
-# خواندن پورت از Railway (متغیر PORT)
-XUI_PORT="${PORT:-${XUI_PORT:-2053}}"
+echo "🚀 Heimdall v1.5.0 Starting..."
+echo "📋 Railway PORT=$PORT"
 
-echo "🚀 Starting Heimdall v1.5.0 on port $XUI_PORT..."
-echo "📋 PORT=$PORT"
+# تنظیم پورت از Railway - حتماً export کن!
+export XUI_PORT="${PORT:-2053}"
+
 echo "📋 XUI_PORT=$XUI_PORT"
 
-# اجرای باینری اصلی
 exec /usr/local/x-ui/x-ui.bin
