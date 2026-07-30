@@ -24,13 +24,6 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 WORKDIR /usr/local/x-ui
 
-# cache-bust: 2026-07-30-v2
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Railway خودش پورت رو تنظیم میکنه
-# x-ui از متغیر PORT یا XUI_PORT استفاده میکنه
-
-EXPOSE 2053
-
-CMD ["/start.sh"]
+# استفاده از ENTRYPOINT مستقیم - نیاز به start.sh نیست
+# XUI_PORT از متغیر PORT Railway گرفته میشه
+ENTRYPOINT ["sh", "-c", "export XUI_PORT=${PORT:-${XUI_PORT:-2053}} && echo \"🚀 Starting Heimdall on port $XUI_PORT...\" && exec /usr/local/x-ui/x-ui"]
