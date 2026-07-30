@@ -24,6 +24,6 @@ RUN mkdir -p /etc/x-ui /var/log/x-ui
 
 WORKDIR /usr/local/x-ui
 
-# استفاده از ENTRYPOINT مستقیم - نیاز به start.sh نیست
-# XUI_PORT از متغیر PORT Railway گرفته میشه
-ENTRYPOINT ["sh", "-c", "export XUI_PORT=${PORT:-${XUI_PORT:-2053}} && echo \"🚀 Starting Heimdall on port $XUI_PORT...\" && exec /usr/local/x-ui/x-ui"]
+EXPOSE 2053
+
+CMD ["./x-ui"]

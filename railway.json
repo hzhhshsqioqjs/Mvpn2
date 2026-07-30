@@ -5,8 +5,8 @@
     "dockerfilePath": "Dockerfile"
   },
   "deploy": {
-    "startCommand": "./x-ui",
-    "healthcheckPath": "/",
+    "startCommand": "sh -c \"export XUI_PORT=$PORT && exec /usr/local/x-ui/x-ui\"",
+    "healthcheckPath": "",
     "healthcheckTimeout": 100,
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
